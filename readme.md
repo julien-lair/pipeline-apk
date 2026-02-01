@@ -1,12 +1,52 @@
-# Commande pour installer les models
-curl -fsSL https://ollama.com/install.sh | sh
+# Projet
+L'objectif de ce programme est de déocmpiler et d'analyser des apk.
+Plusieurs models de LLM sont appelé pour générer les différentes analsyes.
+
+# Configuration 
+Dans le répertoire du proejt ajouter votre apk.jar (apksigner.jar déjà présent)
+Dans le fichier `core/conf.py` modifier les params : 
+
+```python
+JAR_FILE = "apksigner.jar" # nom du fichier jar
+DEEP_ANALYSE = True # Analyse profondes ou non 
+
+OLLAMA_API_URL = "localhost:11434/api/generate" #URL du server ollama 
+OLLAMA_API_TOKEN = "token" # token du serveur. 
+
+DEBUG = False #Mode debug
+```
+Deep_analyse permet de sélectionner plus ou moins de classes dans la détection des classes pertinentes.
+Le mode debug permet de sauter certains apelles de LLM, utile pour regénérer le rapports à partir de save dans le fichier `db/`
+
+Ollama api url : si vous utiliser une instances GPU, ajouter l'url.
+J'ai utilisé des instances gpu RTX 5090 sur vast.ai, coût d'une analyse d'apk environ 0,70€
+Pour récupérer le OLLAMA API TOKEN sur vasi.ai -> echo $OPEN_BUTTON_TOKEN
+
+## Configuration ordinateurs
+Les tests ont été réalisé sur l'application apksigner.apk 
+Une analyse complète environ 1h20, avec un GPU Nvidia 5090
+40 Go RAM minimum 
+45 Go de stockage min 
+
+## Commande pour installer les models (à faire sur l'instance GPU ou en local)
+```
+curl -fsSL https://ollama.com/install.sh | sh #Installer ollama
 pkill ollama
-ollama pull qwen3-vl:32b
-ollama pull qwen3:32b
-echo $OPEN_BUTTON_TOKEN
+ollama pull qwen3-vl:32b #insallation des models
+ollama pull qwen3:32b 
+```
 
+## Commande pour éxécuter le projet 
+```
+python3 main.py
+```
 
+# Rapport 
+Le rapport sera généré dans `db/Security_Analysis_Report.pdf` et `db/Security_Analysis_Report.md`
+Le fichier .md permet de faire des modfification, puis avec le mode debug de regénérer le pdf à partir du md sant avoir à refaire toutes la génération.
 
+# Doc supplémentaires 
+Dans le répertoire `doc/`, vous retrouverez le graph utilisé pour choisir les classes pertinentes.
 
 # Comparatif des models
 ## Analyse model glm-4.7-flash:bf16:
