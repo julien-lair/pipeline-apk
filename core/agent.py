@@ -28,7 +28,10 @@ def call_agent_LLM(prompt, agent):
             full_response = result["response"]
         
         return full_response
-        
+    
+    except requests.exceptions.InvalidSchema as error:
+        raise Exception("Impossible de contacter le LLM")
+
     except Exception as error:
         return ""
 
