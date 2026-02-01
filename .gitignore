@@ -1,0 +1,10 @@
+.venv/
+.venv
+.venv/*
+__pycache__
+.github
+apksigner/
+jadx/
+decompile/*
+.DS_store
+.env
